@@ -1,0 +1,7 @@
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\bin\Debug\NewCollage-Manager.exe.config
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\bin\Debug\NewCollage-Manager.exe
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\bin\Debug\NewCollage-Manager.pdb
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\obj\Debug\NewCollage-Manager.csprojAssemblyReference.cache
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\obj\Debug\NewCollage-Manager.csproj.CoreCompileInputs.cache
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\obj\Debug\NewCollage-Manager.exe
+C:\Users\M.K\Desktop\Ali\Work\ADO.Net\NewCollage-Manager\NewCollage-Manager\obj\Debug\NewCollage-Manager.pdb
