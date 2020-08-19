@@ -8,7 +8,7 @@ namespace NewCollage_Manager {
     public class ExistingCourse {
         public ExistingCourse(int teacherID, int courseID)
         {
-            TeacherID = TeacherID;
+            TeacherID = teacherID;
             CourseID = courseID;
         }
 
