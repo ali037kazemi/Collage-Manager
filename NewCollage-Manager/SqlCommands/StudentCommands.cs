@@ -50,6 +50,7 @@ namespace CollageManager {
                         "CONSTRAINT FK_Student FOREIGN KEY (HeadTeachId) REFERENCES HeadTeachs(HeadTeachId)" +
                     ")";
 
+            SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
                 SqlCommand cm = new SqlCommand(queryString, Connection);
@@ -57,11 +58,14 @@ namespace CollageManager {
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
 
+                transaction.Commit();
+
                 // Displaying a message  
                 Console.WriteLine("Students table created Successfully");
             }
             catch (Exception e)
             {
+                transaction.Rollback();
                 throw;
             }
         }
@@ -102,18 +106,30 @@ namespace CollageManager {
                             $"{st.HeadTeachId}" +
                     ")";
 
+            SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, Connection);
+
+                SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
-                cm.ExecuteNonQuery();
+                int rowsEffected = cm.ExecuteNonQuery();
 
-                // Displaying a message  
-                Console.WriteLine("Insert into Students table Successfully");
+                if (rowsEffected == 1)
+                {
+                    transaction.Commit();
+
+                    // Displaying a message  
+                    Console.WriteLine("Insert into Students table Successfully");
+                }
+                else
+                {
+                    transaction.Rollback();
+                }
             }
             catch (Exception)
             {
+                transaction.Rollback();
                 throw;
             }
         }
@@ -126,18 +142,30 @@ namespace CollageManager {
             string queryString =
                     $"delete from Students where StudentId = {id}";
 
+            SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, Connection);
+
+                SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
-                cm.ExecuteNonQuery();
+                int rowsEffected = cm.ExecuteNonQuery();
 
-                // Displaying a message  
-                Console.WriteLine("Students deleted Successfully");
+                if (rowsEffected == 1)
+                {
+                    transaction.Commit();
+
+                    // Displaying a message  
+                    Console.WriteLine("Students deleted Successfully");
+                }
+                else
+                {
+                    transaction.Rollback();
+                }
             }
             catch (Exception)
             {
+                transaction.Rollback();
                 throw;
             }
         }
@@ -163,18 +191,30 @@ namespace CollageManager {
                         $"HeadTeachId = {st.HeadTeachId}" +
                     $" where StudentId = {id}";
 
+            SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, Connection);
+
+                SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
-                cm.ExecuteNonQuery();
+                int rowsEffected = cm.ExecuteNonQuery();
 
-                // Displaying a message  
-                Console.WriteLine("Students updated Successfully");
+                if (rowsEffected == 1)
+                {
+                    transaction.Commit();
+
+                    // Displaying a message  
+                    Console.WriteLine("Students updated Successfully");
+                }
+                else
+                {
+                    transaction.Rollback();
+                }
             }
             catch (Exception)
             {
+                transaction.Rollback();
                 throw;
             }
         }
@@ -215,7 +255,7 @@ namespace CollageManager {
             }
             catch (Exception)
             {
-                throw; 
+                throw;
             }
 
             return students;
