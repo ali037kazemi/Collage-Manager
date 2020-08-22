@@ -6,17 +6,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on Teachers table
+    /// </summary>
     public class TeacherCommands {
 
-        private static SqlConnection connection =
-            new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateTeacherTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public TeacherCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساختن جدول اساتید
+        /// </summary>
+        public void CreateTeacherTable()
         {
             string queryString =
                     "create table Teachers(" +
-                        "PersonelID int identity(1001, 1) PRIMARY KEY," +
+                        "TeacherId int identity(1001, 1) PRIMARY KEY," +
                         "NationalCode varchar(10) check(LEN(NationalCode) = 10) not null unique," +
                         "Name nvarchar(50) not null, " +
                         "Family nvarchar(50) not null," +
@@ -28,10 +46,7 @@ namespace NewCollage_Manager {
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -39,17 +54,16 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Teachers table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertTeacher(Teacher st)
+        /// <summary>
+        /// افزودن یک استاد جدید در دیتابیس
+        /// </summary>
+        /// <param name="st">استادی که در دیتابیس اضافه میشود</param>
+        public void InsertTeacher(Teacher st)
         {
             string queryString =
 
@@ -76,10 +90,7 @@ namespace NewCollage_Manager {
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -87,27 +98,23 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into Teachers table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void DeleteTeacher(int id)
+        /// <summary>
+        /// حذف اطلاعات یک استاد با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی استاد مورد نظر برای حذف اطلاعات آن از دیتابیس</param>
+        public void DeleteTeacher(int id)
         {
             string queryString =
-                    $"delete from Teachers where PersonelID = {id}";
+                    $"delete from Teachers where TeacherId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -115,17 +122,17 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Teachers deleted Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void UpdateTeacher(int id, Teacher t)
+        /// <summary>
+        /// تغییر اطلاعات یک استاد با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی استاد مورد نظر برای تغییر اطلاعات آن از دیتابیس</param>
+        /// <param name="t">استاد جدید که به جای استاد قبلی قرار خواهد گرفت</param>
+        public void UpdateTeacher(int id, Teacher t)
         {
             string queryString =
                     $"update Teachers set " +
@@ -136,14 +143,11 @@ namespace NewCollage_Manager {
                         $"PhoneNumber = '{t.PhoneNumber}', " +
                         $"Address = N'{t.Address}', " +
                         $"Degree = N'{t.Degree}'" +
-                    $"where PersonelID = {id}";
+                    $"where TeacherId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -153,29 +157,25 @@ namespace NewCollage_Manager {
             }
             catch (Exception e)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static List<Teacher> SelectTeacher(int id)
+        /// <summary>
+        /// نمایش اطلاعات یک استاد با استفاده از آیدی استاد
+        /// </summary>
+        /// <param name="id">آیدی استاد مورد نظر برای نمایش اطلاعات آن از دیتابیس</param>
+        /// <returns>یک لیست از اساتیدی که آیدی مورد نظر را دارند</returns>
+        public List<Teacher> SelectTeacher(int id, SqlDataAdapter adapter)
         {
             string queryString =
-                    $"select * from Teachers where PersonelID = {id}";
+                    $"select * from Teachers where TeacherId = {id}";
 
             List<Teacher> teachers = new List<Teacher>();
-            SqlDataAdapter adapter = new SqlDataAdapter();
             DataSet ds = new DataSet();
 
             try
             {
-                // Opening Connection  
-                connection.Open();
-
-                adapter.SelectCommand = new SqlCommand(queryString, connection);
+                adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
 
@@ -188,21 +188,16 @@ namespace NewCollage_Manager {
                             row.ItemArray[3].ToString(), row.ItemArray[4].ToString(),
                             row.ItemArray[5].ToString(), row.ItemArray[6].ToString(),
                             row.ItemArray[7].ToString());
-                    teacher.PersonelID = (int)row.ItemArray[0];
+                    teacher.TeacherId = (int)row.ItemArray[0];
                     teachers.Add(teacher);
                 }
 
                 // Displaying a message
                 Console.WriteLine("Teachers selected Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
 
             return teachers;

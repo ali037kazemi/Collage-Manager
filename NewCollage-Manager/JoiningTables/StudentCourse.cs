@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
-    public class StudentCourse {
-        public int StudentID { get; set; }
-        public int CourseID { get; set; }
+namespace CollageManager {
 
-        public StudentCourse(int studentID, int courseID)
+    /// <summary>
+    /// A class for representing multi-to-multi relation between course and student
+    /// </summary>
+    public class StudentCourse {
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
+
+        public StudentCourse(int studentId, int courseId)
         {
-            StudentID = studentID;
-            CourseID = courseID;
+            StudentId = studentId;
+            CourseId = courseId;
         }
     }
 }

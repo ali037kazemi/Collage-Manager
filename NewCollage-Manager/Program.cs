@@ -1,81 +1,114 @@
-﻿using NewCollage_Manager;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
     public class Program {
         static void Main(string[] args)
         {
-            //HeadTeachCommands.CreateHeadTeachTable();
-            //HeadTeach ht = new HeadTeach("0379999999", "Ali", "Kazemi",
-            //                             "Davood", "092102755069", "Afsarieh",
-            //                             "پشتیبان شبکه");
-            //HeadTeachCommands.InsertHeadTeach(ht);
-            //HeadTeach ht2 = new HeadTeach("0370000000", "Hasan", "Kazemi",
-            //                             "Davood", "09904693079", "Afsarieh",
-            //                             " دانشجو");
-            //HeadTeachCommands.InsertHeadTeach(ht2);
-            //HeadTeachCommands.DeleteHeadTeach(2001);
-            //HeadTeach htCopy = (HeadTeach)ht.Clone();
-            //htCopy.NationalCode = "0372047041";
-            //HeadTeachCommands.UpdateHeadTeach(2001, htCopy);
-            //foreach (var item in HeadTeachCommands.SelectHeadTeach(2002))
-            //{
-            //    Console.WriteLine(item);
-            //}
-            //HeadTeachCommands.DropHeadTeachTable();
-            //HeadTeachCommands.DropHeadTeachTable();
+            SqlConnection connection =
+                    new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
 
-            //StudentCommands.CreateStudentTable();
-            //Student st = new Student("0370000000", "Ali", "Kazemi", "Davood",
-            //                         1397, "09904693079", "Tehran", "0123456789",
-            //                         "مهندسی کامپیوتر", "کارشناسی", 2001);
-            //StudentCommands.InsertStudent(st);
-            //StudentCommands.DeleteStudent(99001);
-            //Student stCopy = (Student)st.Clone();
-            //stCopy.Name = "Reza";
-            //StudentCommands.UpdateStudent(99002, stCopy);
-            //foreach (var item in StudentCommands.SelectStudent(99002))
-            //{
-            //    Console.WriteLine(item);
-            //}
+            SqlDataAdapter adapter = new SqlDataAdapter();
 
-            //TeacherCommands.CreateTeacherTable();
-            //Teacher t = new Teacher("0370000000", "Ali", "Kazemi", "Davood",
-            //                         "09904693079", "Tehran", "استاد دانشگاه خواجه نصیر");
-            //TeacherCommands.InsertTeacher(t);
-            //TeacherCommands.DeleteTeacher(1002);
-            //Teacher tCopy = (Teacher)t.Clone();
-            //tCopy.Name = "Hasan";
-            //TeacherCommands.UpdateTeacher(1003, tCopy);
-            //foreach (var item in TeacherCommands.SelectTeacher(1003))
-            //{
-            //    Console.WriteLine(item);
-            //}
+            try
+            {
+                connection.Open();
 
-            //CourseCommands.CreateCourseTable();
-            //Course c = new Course("مبانی برنامه نویسی", 3, true, 2001);
-            //CourseCommands.InsertCourse(c);
-            //Course c2 = new Course("برنامه سازي پيشرفته", 3, true, 2001);
-            //CourseCommands.InsertCourse(c2);
-            //CourseCommands.DeleteCourse(101);
-            //Course cCopy = (Course)c.Clone();
-            //cCopy.Title = "ساختمان داده ها";
-            //cCopy.Credit = 2;
-            //CourseCommands.UpdateCourse(102, cCopy);
-            //foreach (var item in CourseCommands.SelectCourse(102))
-            //{
-            //    Console.WriteLine(item);
-            //}
+                HeadTeachCommands htCommands = new HeadTeachCommands(connection);
+                //htCommands.CreateHeadTeachTable();
+                //HeadTeach ht = new HeadTeach("0379999999", "Ali", "Kazemi",
+                //                             "Davood", "09210275569", "Afsarieh",
+                //                             "پشتیبان شبکه");
+                //htCommands.InsertHeadTeach(ht);
+                //HeadTeach ht2 = new HeadTeach("0370000000", "Hasan", "Kazemi",
+                //                             "Davood", "09904693079", "Afsarieh",
+                //                             " دانشجو");
+                //htCommands.InsertHeadTeach(ht2);
+                //htCommands.DeleteHeadTeach(2001);
+                //HeadTeach htCopy = (HeadTeach)ht.Clone();
+                //htCopy.NationalCode = "0372047041";
+                //htCommands.UpdateHeadTeach(2001, htCopy);
+                //foreach (var item in htCommands.SelectHeadTeach(2002, adapter))
+                //{
+                //    Console.WriteLine(item);
+                //}
+                //htCommands.DropHeadTeachTable();
 
-            //ExistingCourseCommands.CreateExistingCourseTable();
-            //ExistingCourseCommands.InsertExistingCourse(new ExistingCourse(1001, 101));
+                StudentCommands sCommands = new StudentCommands(connection);
+                //sCommands.CreateStudentTable();
+                //Student st = new Student("0370000000", "Ali", "Kazemi", "Davood",
+                //                         1397, "09904693079", "Tehran", "0123456789",
+                //                         "مهندسی کامپیوتر", "کارشناسی", 2001);
+                //sCommands.InsertStudent(st);
+                //sCommands.DeleteStudent(99001);
+                //Student stCopy = (Student)st.Clone();
+                //stCopy.Name = "Reza";
+                //sCommands.UpdateStudent(99002, stCopy);
+                //foreach (var item in sCommands.SelectStudent(99002, adapter))
+                //{
+                //    Console.WriteLine(item);
+                //}
 
-            //PrerequisitesCourseCommands.CreatePrerequisitesCourseTable();
-            //PrerequisitesCourseCommands.InsertPrerequisitesCourse(new PrerequisitesCourse(101, 102));
+                TeacherCommands tCommands = new TeacherCommands(connection);
+                //tCommands.CreateTeacherTable();
+                //Teacher t = new Teacher("0370000000", "Ali", "Kazemi", "Davood",
+                //                         "09904693079", "Tehran", "استاد دانشگاه خواجه نصیر");
+                //tCommands.InsertTeacher(t);
+                //tCommands.DeleteTeacher(1002);
+                //Teacher tCopy = (Teacher)t.Clone();
+                //tCopy.Name = "Hasan";
+                //tCommands.UpdateTeacher(1003, tCopy);
+                //foreach (var item in tCommands.SelectTeacher(1003, adapter))
+                //{
+                //    Console.WriteLine(item);
+                //}
+
+                CourseCommands cCommands = new CourseCommands(connection);
+                //cCommands.CreateCourseTable();
+                //Course c = new Course("مبانی برنامه نویسی", 3, true, 2001);
+                //cCommands.InsertCourse(c);
+                //Course c2 = new Course("برنامه سازي پيشرفته", 3, true, 2001);
+                //cCommands.InsertCourse(c2);
+                //cCommands.DeleteCourse(101);
+                //Course cCopy = (Course)c.Clone();
+                //cCopy.Title = "ساختمان داده ها";
+                //cCopy.Credit = 2;
+                //cCommands.UpdateCourse(102, cCopy);
+                //foreach (var item in cCommands.SelectCourse(102, adapter))
+                //{
+                //    Console.WriteLine(item);
+                //}
+
+                ExistingCourseCommands ecCommands = new ExistingCourseCommands(connection);
+                //ecCommands.CreateExistingCourseTable();
+                //ecCommands.InsertExistingCourse(new ExistingCourse(1001, 103));
+                //ecCommands.InsertExistingCourse(new ExistingCourse(1001, 104));
+
+                PrerequisitesCourseCommands pcCommands = new PrerequisitesCourseCommands(connection);
+                //pcCommands.CreatePrerequisitesCourseTable();
+                //pcCommands.InsertPrerequisitesCourse(new PrerequisitesCourse(104, 103));
+
+                StudentCourseCommands scCommands = new StudentCourseCommands(connection);
+                //scCommands.CreateStudentCourseTable();
+                //scCommands.InsertStudentCourse(new StudentCourse(, ));
+
+                StudentTeacherCommands stCommands = new StudentTeacherCommands(connection);
+                //stCommands.CreateStudentTeacherTable();
+                //stCommands.InsertStudentTeacher(new StudentTeacher(, ));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("OOPs, something went wrong.\n\n" + e);
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+            }
         }
     }
 }

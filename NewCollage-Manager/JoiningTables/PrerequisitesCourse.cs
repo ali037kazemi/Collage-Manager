@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
-    public class PrerequisitesCourse {
-        public int MainCourseID { get; set; }
-        public int PrerequisitesCourseID { get; set; }
+namespace CollageManager {
 
-        public PrerequisitesCourse(int mainID, int preID)
+    /// <summary>
+    /// A class for representing corses that are prerequisites(پیش نیاز) for other corses
+    /// </summary>
+    public class PrerequisitesCourse {
+        public int MainCourseId { get; set; }
+        public int PrerequisitesCourseId { get; set; }
+
+        public PrerequisitesCourse(int mainId, int preId)
         {
-            MainCourseID = mainID;
-            PrerequisitesCourseID = preID;
+            MainCourseId = mainId;
+            PrerequisitesCourseId = preId;
         }
     }
 }

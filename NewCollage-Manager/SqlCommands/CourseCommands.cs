@@ -6,29 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on Corses table
+    /// </summary>
     public class CourseCommands {
 
-        private static SqlConnection connection =
-            new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateCourseTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public CourseCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساختن جدول دروس
+        /// </summary>
+        public void CreateCourseTable()
         {
             string queryString =
                     "create table Courses(" +
-                        "CourseID int identity(101, 1) PRIMARY KEY," +
+                        "CourseId int identity(101, 1) PRIMARY KEY," +
                         "Title nvarchar(50) not null, " +
                         "Credit tinyInt not null," +
                         "CreditType bit not null," + // True for takhasosi, False for omumi
-                        "HeadTeachID int not null FOREIGN KEY (HeadTeachID) REFERENCES HeadTeachs(PersonelID)" +
+                        "HeadTeachId int not null FOREIGN KEY (HeadTeachId) REFERENCES HeadTeachs(HeadTeachId)" +
                     ");";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -36,17 +51,16 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Courses table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertCourse(Course c)
+        /// <summary>
+        /// افزودن یک درس جدید در دیتابیس
+        /// </summary>
+        /// <param name="c">درسی که در دیتابیس اضافه میشود</param>
+        public void InsertCourse(Course c)
         {
             int type = c.CreditType ? 1 : 0;
             string queryString =
@@ -56,22 +70,19 @@ namespace NewCollage_Manager {
                             "Title," +
                             "Credit," +
                             "CreditType," +
-                            "HeadTeachID" +
+                            "HeadTeachId" +
                     ") " +
                     "values" +
                     "(" +
                             $"N'{c.Title}', " +
                             $"{c.Credit}, " +
                             $"{type}," +
-                            $"{c.HeadTeachID}" +
+                            $"{c.HeadTeachId}" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -79,27 +90,23 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into Courses table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void DeleteCourse(int id)
+        /// <summary>
+        /// حذف اطلاعات یک درس با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی درس مورد نظر برای حذف اطلاعات آن از دیتابیس</param>
+        public void DeleteCourse(int id)
         {
             string queryString =
-                     $"delete from Courses where CourseID = {id}";
+                     $"delete from Courses where CourseId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -107,17 +114,17 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Courses deleted Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void UpdateCourse(int id, Course c)
+        /// <summary>
+        /// تغییر اطلاعات یک درس با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی درس مورد نظر برای تغییر اطلاعات آن از دیتابیس</param>
+        /// <param name="c">درس جدید که به جای درس قبلی قرار خواهد گرفت</param>
+        public void UpdateCourse(int id, Course c)
         {
             int type = c.CreditType ? 1 : 0;
             string queryString =
@@ -125,15 +132,12 @@ namespace NewCollage_Manager {
                         $"Title = N'{c.Title}', " +
                         $"Credit = {c.Credit}, " +
                         $"CreditType = {type}," +
-                        $"HeadTeachID = {c.HeadTeachID}" +
-                     $"where CourseID = {id}";
+                        $"HeadTeachId = {c.HeadTeachId}" +
+                     $"where CourseId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -141,31 +145,27 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Courses update Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static List<Course> SelectCourse(int id)
+        /// <summary>
+        /// نمایش اطلاعات یک درس با استفاده از آیدی درس
+        /// </summary>
+        /// <param name="id">آیدی درس مورد نظر برای نمایش اطلاعات آن از دیتابیس</param>
+        /// <returns>یک لیست از دروسی که آیدی مورد نظر را دارند</returns>
+        public List<Course> SelectCourse(int id, SqlDataAdapter adapter)
         {
             string queryString =
-                    $"select * from Courses where CourseID = {id}";
+                    $"select * from Courses where CourseId = {id}";
 
             List<Course> courses = new List<Course>();
-            SqlDataAdapter adapter = new SqlDataAdapter();
             DataSet ds = new DataSet();
 
             try
             {
-                // Opening Connection  
-                connection.Open();
-
-                adapter.SelectCommand = new SqlCommand(queryString, connection);
+                adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
 
@@ -181,14 +181,9 @@ namespace NewCollage_Manager {
                 // Displaying a message
                 Console.WriteLine("Courses selected Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
 
             return courses;

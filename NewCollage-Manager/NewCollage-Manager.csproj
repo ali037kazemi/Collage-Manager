@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>NewCollage_Manager</RootNamespace>
     <AssemblyName>NewCollage-Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +50,7 @@
     <Compile Include="JoiningTables\StudentTeacher.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\HeadTeach.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Program.cs" />
@@ -57,7 +59,6 @@
     <Compile Include="SqlCommands\ExistingCourseCommands.cs" />
     <Compile Include="SqlCommands\HeadTeachCommands.cs" />
     <Compile Include="SqlCommands\PrerequisitesCourseCommands.cs" />
-    <Compile Include="SqlCommands\SqlServer.cs" />
     <Compile Include="SqlCommands\StudentCommands.cs" />
     <Compile Include="SqlCommands\StudentCourseCommands.cs" />
     <Compile Include="SqlCommands\StudentTeacherCommands.cs" />

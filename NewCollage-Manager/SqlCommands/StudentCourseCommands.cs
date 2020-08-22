@@ -6,29 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on StudentCourses(دروس اخذ شده توسط دانشجو) table
+    /// </summary>
     public class StudentCourseCommands {
 
-        private static SqlConnection connection =
-           new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateStudentCourseTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public StudentCourseCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساخت جدول دروس اخذ شده توسط دانشجو
+        /// </summary>
+        public void CreateStudentCourseTable()
         {
             string queryString =
                     "create table StudentCourses(" +
-                        "StudentID int not null," +
-                        "CourseID int not null," +
+                        "StudentId int not null," +
+                        "CourseId int not null," +
 
-                        "CONSTRAINT FK_Student_SC FOREIGN KEY (StudentID) REFERENCES Students(StudentID)," +
-                        "CONSTRAINT FK_Course_SC FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)" +
+                        "CONSTRAINT FK_Student_SC FOREIGN KEY (StudentId) REFERENCES Students(StudentId)," +
+                        "CONSTRAINT FK_Course_SC FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -36,37 +51,33 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("StudentCourses table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertStudentCourse(StudentCourse sc)
+        /// <summary>
+        /// اضافه کردن یک ردیف در جدول دروس اخذ شده توسط دانشجو
+        /// </summary>
+        /// <param name="sc">درس و دانشجو مورد نظر</param>
+        public void InsertStudentCourse(StudentCourse sc)
         {
             string queryString =
 
                     "insert into StudentCourses " +
                     "(" +
-                            "StudentID," +
-                            "CourseID" +
+                            "StudentId," +
+                            "CourseId" +
                     ") " +
                     "values" +
                     "(" +
-                            $"{sc.StudentID}, " +
-                            $"{sc.CourseID} " +
+                            $"{sc.StudentId}, " +
+                            $"{sc.CourseId} " +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -74,14 +85,9 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into StudentCourses table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
     }

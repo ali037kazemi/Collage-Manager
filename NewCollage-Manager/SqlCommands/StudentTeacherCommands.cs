@@ -6,29 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on StudentTeachers(دانشجو و استاد) table
+    /// </summary>
     public class StudentTeacherCommands {
 
-        private static SqlConnection connection =
-           new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateStudentTeacherTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public StudentTeacherCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساخت جدول ارتباط چند به چند استاد با دانشجو
+        /// </summary>
+        public void CreateStudentTeacherTable()
         {
             string queryString =
                     "create table StudentTeachers(" +
-                        "StudentID int not null," +
-                        "TeacherID int not null," +
+                        "StudentId int not null," +
+                        "TeacherId int not null," +
 
-                        "FOREIGN KEY (TeacherID) REFERENCES Teachers(PersonelID)," +
-                        "FOREIGN KEY (StudentID) REFERENCES Students(StudentID)" +
+                        "FOREIGN KEY (TeacherId) REFERENCES Teachers(HeadTeachId)," +
+                        "FOREIGN KEY (StudentId) REFERENCES Students(StudentId)" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -36,37 +51,33 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("StudentTeachers table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertStudentTeacher(StudentTeacher st)
+        /// <summary>
+        /// اضافه کردن ردیف در جدول رابطه استاد با دانشجو
+        /// </summary>
+        /// <param name="st"></param>
+        public void InsertStudentTeacher(StudentTeacher st)
         {
             string queryString =
 
                     "insert into StudentTeachers " +
                     "(" +
-                            "StudentID," +
-                            "TeacherID" +
+                            "StudentId," +
+                            "TeacherId" +
                     ") " +
                     "values" +
                     "(" +
-                            $"{st.StudentID}, " +
-                            $"{st.TeacherID} " +
+                            $"{st.StudentId}, " +
+                            $"{st.TeacherId} " +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -74,14 +85,9 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into StudentTeachers table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
     }

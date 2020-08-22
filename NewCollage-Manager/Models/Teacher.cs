@@ -4,17 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
-    public class Teacher : ICloneable {
-        public int PersonelID { get; set; }
-        public string NationalCode { get; set; }
-        public string Name { get; set; }
-        public string Family { get; set; }
-        public string FatherName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+namespace CollageManager {
+    /// <summary>
+    /// استاد که از کلاس Person ارث بری کرده است
+    /// </summary>
+    public class Teacher : Person {
+        public int TeacherId { get; set; }
+        /// <summary>
+        /// مدرک تحصیلی
+        /// </summary>
         public string Degree { get; set; }
+        public List<Student> Students { get; set; }
+        /// <summary>
+        /// دروس ارایه شده توسط استاد
+        /// </summary>
+        public List<Course> Courses { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nationalCode"></param>
+        /// <param name="name"></param>
+        /// <param name="family"></param>
+        /// <param name="fatherName"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="address"></param>
+        /// <param name="degree">مدرک تحصیلی</param>
         public Teacher(string nationalCode, string name, string family,
                        string fatherName, string phoneNumber, string address,
                        string degree)
@@ -31,12 +46,9 @@ namespace NewCollage_Manager {
             Courses = new List<Course>();
         }
 
-        public object Clone()
+        public override string ToString()
         {
-            return this.MemberwiseClone();
+            return $"Teacher({TeacherId}) : {Name} {Family}";
         }
-
-        public List<Student> Students { get; set; }
-        public List<Course> Courses { get; set; }
     }
 }

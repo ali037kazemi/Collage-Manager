@@ -4,33 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
     public class Course : ICloneable {
-        public int CourseID { get; set; }
+        public int CourseId { get; set; }
         public string Title { get; set; }
+        /// <summary>
+        /// تعداد واحد
+        /// </summary>
         public byte Credit { get; set; }
+        /// <summary>
+        /// True value is for takhasosi and False value is for omumi
+        /// </summary>
         public bool CreditType { get; set; } // True for takhasosi, False for omumi
+        /// <summary>
+        /// آیدی مسول آموزشی که این درس را ارایه میدهد
+        /// </summary>
+        public int HeadTeachId { get; set; }
+        public List<Student> Students { get; set; }
+        public List<Teacher> Teachers { get; set; }
+        /// <summary>
+        /// پیشنیازهای درس
+        /// </summary>
+        public List<Course> PrerequisitesCourses { get; set; }
 
-        // added
-        public int HeadTeachID { get; set; }
-        //
-
-        public Course(string title, byte credit, bool creditType, int headID)
+        public Course(string title, byte credit, bool creditType, int headId)
         {
             Title = title;
             Credit = credit;
             CreditType = creditType;
-            HeadTeachID = headID;
+            HeadTeachId = headId;
 
             Students = new List<Student>();
             Teachers = new List<Teacher>();
             PrerequisitesCourses = new List<Course>();
         }
-
-        public Course(int id, string title, byte credit, bool creditType, int headID)
-            : this(title, credit, creditType, headID)
+        public Course(int id, string title, byte credit, bool creditType, int headId)
+            : this(title, credit, creditType, headId)
         {
-            CourseID = id;
+            CourseId = id;
         }
 
         public object Clone()
@@ -39,11 +50,7 @@ namespace NewCollage_Manager {
         }
         public override string ToString()
         {
-            return $"Course({CourseID}) : {Title}, {Credit}, {CreditType}";
+            return $"Course({CourseId}) : {Title}, {Credit}, {CreditType}";
         }
-
-        public List<Student> Students { get; set; }
-        public List<Teacher> Teachers { get; set; }
-        public List<Course> PrerequisitesCourses { get; set; }
     }
 }

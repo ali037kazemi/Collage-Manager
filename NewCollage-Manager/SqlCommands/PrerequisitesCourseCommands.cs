@@ -6,29 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on PrerequisitesCourses(پیشنیاز های دروس) table
+    /// </summary>
     public class PrerequisitesCourseCommands {
 
-        private static SqlConnection connection =
-           new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreatePrerequisitesCourseTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public PrerequisitesCourseCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساختن جدول دروس و پیشنیاز های آنها
+        /// </summary>
+        public void CreatePrerequisitesCourseTable()
         {
             string queryString =
                     "create table PrerequisitesCourses(" +
-                        "MainCourseID int not null," +
-                        "PrerequisitesCourseID int not null," +
+                        "MainCourseId int not null," +
+                        "PrerequisitesCourseId int not null," +
 
-                        "CONSTRAINT FK_Main_Course FOREIGN KEY (MainCourseID) REFERENCES Courses(CourseID)," +
-                        "CONSTRAINT FK_Pre_Course FOREIGN KEY (PrerequisitesCourseID) REFERENCES Courses(CourseID)" +
+                        "CONSTRAINT FK_Main_Course FOREIGN KEY (MainCourseId) REFERENCES Courses(CourseId)," +
+                        "CONSTRAINT FK_Pre_Course FOREIGN KEY (PrerequisitesCourseId) REFERENCES Courses(CourseId)" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -36,37 +51,32 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("PrerequisitesCourses table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertPrerequisitesCourse(PrerequisitesCourse pc)
+        /// <summary>
+        /// اضافه کردن ردیف در جدول دروس و پیشنیاز ها
+        /// </summary>
+        public void InsertPrerequisitesCourse(PrerequisitesCourse pc)
         {
             string queryString =
 
                     "insert into PrerequisitesCourses " +
                     "(" +
-                            "MainCourseID," +
-                            "PrerequisitesCourseID" +
+                            "MainCourseId," +
+                            "PrerequisitesCourseId" +
                     ") " +
                     "values" +
                     "(" +
-                            $"{pc.MainCourseID}, " +
-                            $"{pc.PrerequisitesCourseID} " +
+                            $"{pc.MainCourseId}, " +
+                            $"{pc.PrerequisitesCourseId} " +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -74,14 +84,9 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into PrerequisitesCourses table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
     }

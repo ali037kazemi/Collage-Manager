@@ -6,9 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+
+    /// <summary>
+    /// A class for representing multi-to-multi relation between student and teacher
+    /// </summary>
     public class StudentTeacher {
-        public int StudentID { get; set; }
-        public int TeacherID { get; set; }
+        public int StudentId { get; set; }
+        public int TeacherId { get; set; }
+
+        public StudentTeacher(int studentId, int teacherId)
+        {
+            StudentId = studentId;
+            TeacherId = teacherId;
+        }
     }
 }

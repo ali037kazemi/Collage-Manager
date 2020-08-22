@@ -5,16 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
-    public class HeadTeach : ICloneable {
-        public int PersonelID { get; set; }
-        public string NationalCode { get; set; }
-        public string Name { get; set; }
-        public string Family { get; set; }
-        public string FatherName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+namespace CollageManager {
+    /// <summary>
+    /// مسول آموزش که از کلاس Person ارث بری کرده است
+    /// </summary>
+    public class HeadTeach : Person {
+        public int HeadTeachId { get; set; }
+        /// <summary>
+        /// رشته تحصیلی که مسول آن بخش است
+        /// </summary>
         public string StudyField { get; set; }
+        /// <summary>
+        /// دانشج.یان رشته تحصیلی مورد نظر
+        /// </summary>
+        public List<Student> Students { get; set; }
+        /// <summary>
+        /// دروس موجود در رشته تحصیلی مورد نظر
+        /// </summary>
+        public List<Course> Courses { get; set; }
 
         public HeadTeach(string nationalCode,
                          string name, string family, string fatherName,
@@ -31,12 +39,11 @@ namespace NewCollage_Manager {
             Students = new List<Student>();
             Courses = new List<Course>();
         }
-
         public HeadTeach(int id, string nationalCode, string name,
                          string family, string fatherName,
                          string phoneNumber, string address, string studyField)
         {
-            PersonelID = id;
+            HeadTeachId = id;
             NationalCode = nationalCode;
             Name = name;
             Family = family;
@@ -49,16 +56,9 @@ namespace NewCollage_Manager {
             Courses = new List<Course>();
         }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
         public override string ToString()
         {
-            return $"HeadTeach({PersonelID} : {Name} {Family})";
+            return $"HeadTeach({HeadTeachId} : {Name} {Family})";
         }
-
-        public List<Student> Students { get; set; }
-        public List<Course> Courses { get; set; }
     }
 }

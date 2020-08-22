@@ -6,23 +6,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on HeadTeachs table
+    /// </summary>
     public class HeadTeachCommands {
 
-        private static SqlConnection connection =
-            new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void DropHeadTeachTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public HeadTeachCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// حذف جدول مسولین آموزش
+        /// </summary>
+        public void DropHeadTeachTable()
         {
             string queryString =
                     "drop table HeadTeachs";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -30,21 +45,19 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("HeadTeachs table deleted Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void CreateHeadTeachTable()
+        /// <summary>
+        /// ساختن جدول مسولین آموزش
+        /// </summary>
+        public void CreateHeadTeachTable()
         {
             string queryString =
                     "create table HeadTeachs(" +
-                        "PersonelID int identity(2001, 1)  PRIMARY KEY," +
+                        "HeadTeachId int identity(2001, 1)  PRIMARY KEY," +
                         "NationalCode varchar(10) check(LEN(NationalCode) = 10) not null unique," +
                         "Name nvarchar(50) not null, " +
                         "Family nvarchar(50) not null," +
@@ -56,10 +69,7 @@ namespace NewCollage_Manager {
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -67,17 +77,16 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("HeadTeachs table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertHeadTeach(HeadTeach ht)
+        /// <summary>
+        /// افزودن یک مسول آموزش جدید در دیتابیس
+        /// </summary>
+        /// <param name="ht">مسول آموزشی که در دیتابیس اضافه میشود</param>
+        public void InsertHeadTeach(HeadTeach ht)
         {
             string queryString =
 
@@ -104,10 +113,7 @@ namespace NewCollage_Manager {
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -115,26 +121,22 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into HeadTeachs table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void DeleteHeadTeach(int id)
+        /// <summary>
+        /// حذف اطلاعات یک مسول آموزش با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی مسول آموزش مورد نظر برای حذف اطلاعات آن از دیتابیس</param>
+        public void DeleteHeadTeach(int id)
         {
             string queryString =
-                     $"delete from HeadTeachs where PersonelID = {id}";
+                     $"delete from HeadTeachs where HeadTeachId = {id}";
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -142,17 +144,17 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("HeadTeachs deleted Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void UpdateHeadTeach(int id, HeadTeach ht)
+        /// <summary>
+        /// تغییر اطلاعات یک مسول آموزش با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی مسول آموزش مورد نظر برای تغییر اطلاعات آن از دیتابیس</param>
+        /// <param name="ht">مسول آموزش جدید که به جای درس قبلی قرار خواهد گرفت</param>
+        public void UpdateHeadTeach(int id, HeadTeach ht)
         {
             string queryString =
                      $"update HeadTeachs set " +
@@ -163,13 +165,10 @@ namespace NewCollage_Manager {
                         $"PhoneNumber = '{ht.PhoneNumber}', " +
                         $"Address = N'{ht.Address}', " +
                         $"StudyField = N'{ht.StudyField}'" +
-                     $"where PersonelID = {id}";
+                     $"where HeadTeachId = {id}";
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -177,31 +176,27 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("HeadTeachs update Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static List<HeadTeach> SelectHeadTeach(int id)
+        /// <summary>
+        /// نمایش اطلاعات یک مسول آموزش با استفاده از آیدی درس
+        /// </summary>
+        /// <param name="id">آیدی مسول آموزش مورد نظر برای نمایش اطلاعات آن از دیتابیس</param>
+        /// <returns>یک لیست از مسول آموزش هایی که آیدی مورد نظر را دارند</returns>
+        public List<HeadTeach> SelectHeadTeach(int id, SqlDataAdapter adapter)
         {
             string queryString =
-                    $"select * from HeadTeachs where PersonelID = {id}";
+                    $"select * from HeadTeachs where HeadTeachId = {id}";
 
             List<HeadTeach> headTeachs = new List<HeadTeach>();
-            SqlDataAdapter adapter = new SqlDataAdapter();
             DataSet ds = new DataSet();
 
             try
             {
-                // Opening Connection  
-                connection.Open();
-
-                adapter.SelectCommand = new SqlCommand(queryString, connection);
+                adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
 
@@ -219,14 +214,9 @@ namespace NewCollage_Manager {
                 // Displaying a message
                 Console.WriteLine("HeadTeachs selected Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
 
             return headTeachs;

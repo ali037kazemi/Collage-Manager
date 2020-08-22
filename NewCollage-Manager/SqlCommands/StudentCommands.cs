@@ -6,38 +6,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on Students table
+    /// </summary>
     public class StudentCommands {
 
-        private static SqlConnection connection =
-            new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateStudentTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public StudentCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساختن جدول دانشجویان
+        /// </summary>
+        public void CreateStudentTable()
         {
             string queryString =
                     "create table Students(" +
-                        "StudentID int identity(99001, 1) PRIMARY KEY," +
+                        "StudentId int identity(99001, 1) PRIMARY KEY," +
                         "NationalCode varchar(10) check(LEN(NationalCode) = 10) not null unique," +
                         "Name nvarchar(50) not null, " +
                         "Family nvarchar(50) not null," +
                         "FatherName nvarchar(50) not null," +
                         "EntryYear smallInt not null check(EntryYear > 1394)," +
-                        "PhoneNumber varchar(11) check(LEN(PhoneNumber) = 11)," +
+                        "PhoneNumber varchar(11) check(LEN(PhoneNumber) = 11 and PhoneNumber like '0%')," +
                         "Address nvarchar(150)," +
                         "PostalCode varchar(10) check(LEN(PostalCode) = 10)," +
                         "Field nvarchar(50) not null," +
                         "Grade nvarchar(50) not null," +
-                        "HeadTeachID int not null," +
+                        "HeadTeachId int not null," +
 
-                        "CONSTRAINT FK_Student FOREIGN KEY (HeadTeachID) REFERENCES HeadTeachs(PersonelID)" +
+                        "CONSTRAINT FK_Student FOREIGN KEY (HeadTeachId) REFERENCES HeadTeachs(HeadTeachId)" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -47,15 +62,14 @@ namespace NewCollage_Manager {
             }
             catch (Exception e)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertStudent(Student st)
+        /// <summary>
+        /// افزودن یک دانشجو جدید در دیتابیس
+        /// </summary>
+        /// <param name="st">دانشجویی که در دیتابیس اضافه میشود</param>
+        public void InsertStudent(Student st)
         {
             string queryString =
 
@@ -71,7 +85,7 @@ namespace NewCollage_Manager {
                             "PostalCode," +
                             "Field," +
                             "Grade," +
-                            "HeadTeachID" +
+                            "HeadTeachId" +
                     ") " +
                     "values" +
                     "(" +
@@ -85,15 +99,12 @@ namespace NewCollage_Manager {
                             $"'{st.PostalCode}'," +
                             $"N'{st.Field}'," +
                             $"N'{st.Grade}'," +
-                            $"{st.HeadTeachID}" +
+                            $"{st.HeadTeachId}" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -101,27 +112,23 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into Students table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void DeleteStudent(int id)
+        /// <summary>
+        /// حذف اطلاعات یک دانشجو با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی دانشجوی مورد نظر برای حذف اطلاعات آن از دیتابیس</param>
+        public void DeleteStudent(int id)
         {
             string queryString =
-                    $"delete from Students where StudentID = {id}";
+                    $"delete from Students where StudentId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -129,17 +136,17 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Students deleted Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void UpdateStudent(int id, Student st)
+        /// <summary>
+        /// تغییر اطلاعات یک داشنجو با استفاده از آیدی
+        /// </summary>
+        /// <param name="id">آیدی داشنجوی مورد نظر برای تغییر اطلاعات آن از دیتابیس</param>
+        /// <param name="st">داشنجوی جدید که به جای داشنجو قبلی قرار خواهد گرفت</param>
+        public void UpdateStudent(int id, Student st)
         {
             string queryString =
                     $"update Students set " +
@@ -153,15 +160,12 @@ namespace NewCollage_Manager {
                         $"PostalCode = '{st.PostalCode}'," +
                         $"Field = N'{st.Field}'," +
                         $"Grade = N'{st.Grade}'," +
-                        $"HeadTeachID = {st.HeadTeachID}" +
-                    $" where StudentID = {id}";
+                        $"HeadTeachId = {st.HeadTeachId}" +
+                    $" where StudentId = {id}";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -169,31 +173,27 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Students updated Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static List<Student> SelectStudent(int id)
+        /// <summary>
+        /// نمایش اطلاعات یک دانشجو با استفاده از آیدی درس
+        /// </summary>
+        /// <param name="id">آیدی دانشجوی مورد نظر برای نمایش اطلاعات آن از دیتابیس</param>
+        /// <returns>یک لیست از دانشجویانی که آیدی مورد نظر را دارند</returns>
+        public List<Student> SelectStudent(int id, SqlDataAdapter adapter)
         {
             string queryString =
-                    $"select * from Students where StudentID = {id}";
+                    $"select * from Students where StudentId = {id}";
 
             List<Student> students = new List<Student>();
-            SqlDataAdapter adapter = new SqlDataAdapter();
             DataSet ds = new DataSet();
 
             try
             {
-                // Opening Connection  
-                connection.Open();
-
-                adapter.SelectCommand = new SqlCommand(queryString, connection);
+                adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
 
@@ -213,21 +213,16 @@ namespace NewCollage_Manager {
                 // Displaying a message
                 Console.WriteLine("Students selected Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw; 
             }
 
             return students;
 
             #region DataReader
             //string queryString =
-            //        $"select * from Students where StudentID = {id}";
+            //        $"select * from Students where StudentId = {id}";
 
             //List<Student> students = new List<Student>();
             //try
@@ -244,7 +239,7 @@ namespace NewCollage_Manager {
             //        while (sdr.Read())
             //        {
             //            //students.Add(new Student(
-            //            //                         (int)sdr["StudentID"], sdr["NationalCode"].ToString(),
+            //            //                         (int)sdr["StudentId"], sdr["NationalCode"].ToString(),
             //            //                         sdr["Name"].ToString(), sdr["Family"].ToString(),
             //            //                         sdr["FatherName"].ToString(), (Int16)sdr["EntryYear"],
             //            //                         sdr.GetInt32(6), sdr["PhoneNumber"].ToString(),

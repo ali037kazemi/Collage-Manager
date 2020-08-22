@@ -6,29 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NewCollage_Manager {
+namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
+    /// <summary>
+    /// A class for quering on ExistingCourses(درس های ارایه شده توسط مسول آموزش) table
+    /// </summary>
     public class ExistingCourseCommands {
 
-        private static SqlConnection connection =
-           new SqlConnection("data source=.; database=Collage; integrated security=SSPI");
+        /// <summary>
+        /// یک peroperty برای تنظیم اتصال به دیتابیس
+        /// </summary>
+        public SqlConnection Connection { get; set; }
 
-        public static void CreateExistingCourseTable()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connection">اتصال به دیتابیس مورد نظر</param>
+        public ExistingCourseCommands(SqlConnection connection)
+        {
+            Connection = connection;
+        }
+
+        /// <summary>
+        /// ساخت جدول دروس ارایه شده توسط مسول آموزش
+        /// </summary>
+        public void CreateExistingCourseTable()
         {
             string queryString =
                     "create table ExistingCourses(" +
-                        "TeacherID int not null," +
-                        "CourseID int not null," +
+                        "TeacherId int not null," +
+                        "CourseId int not null," +
 
-                        //"CONSTRAINT FK_Exsting_Teacher FOREIGN KEY (TeacherID) REFERENCES Teachers(PersonelID)," +
-                        "CONSTRAINT FK_Exsting_Course FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)" +
+                        "CONSTRAINT FK_Exsting_Teacher FOREIGN KEY (TeacherId) REFERENCES Teachers(TeacherId)," +
+                        "CONSTRAINT FK_Exsting_Course FOREIGN KEY (CourseId) REFERENCES Courses(CourseId)" +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -36,37 +51,33 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("ExistingCourses table created Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
-        public static void InsertExistingCourse(ExistingCourse ec)
+        /// <summary>
+        /// اضافه کردن ردیف به دروس ارایه شده
+        /// </summary>
+        /// <param name="ec"></param>
+        public void InsertExistingCourse(ExistingCourse ec)
         {
             string queryString =
 
                     "insert into ExistingCourses " +
                     "(" +
-                            "TeacherID," +
-                            "CourseID" +
+                            "TeacherId," +
+                            "CourseId" +
                     ") " +
                     "values" +
                     "(" +
-                            $"{ec.TeacherID}, " +
-                            $"{ec.CourseID} " +
+                            $"{ec.TeacherId}, " +
+                            $"{ec.CourseId} " +
                     ")";
 
             try
             {
-                SqlCommand cm = new SqlCommand(queryString, connection);
-
-                // Opening Connection  
-                connection.Open();
+                SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
                 cm.ExecuteNonQuery();
@@ -74,14 +85,9 @@ namespace NewCollage_Manager {
                 // Displaying a message  
                 Console.WriteLine("Insert into ExistingCourses table Successfully");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("OOPs, something went wrong.\n" + e);
-            }
-            // Closing the connection  
-            finally
-            {
-                connection.Close();
+                throw;
             }
         }
     }
