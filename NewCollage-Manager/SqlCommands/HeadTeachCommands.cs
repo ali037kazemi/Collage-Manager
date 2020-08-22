@@ -37,6 +37,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -48,6 +49,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -69,6 +74,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -80,6 +86,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -113,6 +123,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -125,6 +136,10 @@ namespace CollageManager {
             {
                 throw;
             }
+            finally
+            {
+                Connection.Close();
+            }
         }
         /// <summary>
         /// حذف اطلاعات یک مسول آموزش با استفاده از آیدی
@@ -136,6 +151,7 @@ namespace CollageManager {
                      $"delete from HeadTeachs where HeadTeachId = {id}";
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -147,6 +163,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -168,6 +188,7 @@ namespace CollageManager {
                      $"where HeadTeachId = {id}";
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -179,6 +200,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -196,6 +221,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
@@ -217,6 +243,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
 
             return headTeachs;

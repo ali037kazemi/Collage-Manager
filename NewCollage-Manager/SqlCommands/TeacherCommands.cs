@@ -46,6 +46,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -57,6 +58,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -90,6 +95,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -101,6 +107,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -114,6 +124,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -125,6 +136,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -147,6 +162,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -158,6 +174,10 @@ namespace CollageManager {
             catch (Exception e)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -175,6 +195,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
@@ -198,6 +219,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
 
             return teachers;

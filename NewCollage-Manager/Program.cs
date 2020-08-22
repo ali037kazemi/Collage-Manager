@@ -16,8 +16,6 @@ namespace CollageManager {
 
             try
             {
-                connection.Open();
-
                 HeadTeachCommands htCommands = new HeadTeachCommands(connection);
                 //htCommands.CreateHeadTeachTable();
                 //HeadTeach ht = new HeadTeach("0379999999", "Ali", "Kazemi",

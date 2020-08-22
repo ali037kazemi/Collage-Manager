@@ -53,6 +53,7 @@ namespace CollageManager {
             SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -67,6 +68,10 @@ namespace CollageManager {
             {
                 transaction.Rollback();
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -109,7 +114,7 @@ namespace CollageManager {
             SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
@@ -132,6 +137,10 @@ namespace CollageManager {
                 transaction.Rollback();
                 throw;
             }
+            finally
+            {
+                Connection.Close();
+            }
         }
         /// <summary>
         /// حذف اطلاعات یک دانشجو با استفاده از آیدی
@@ -145,7 +154,7 @@ namespace CollageManager {
             SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
@@ -167,6 +176,10 @@ namespace CollageManager {
             {
                 transaction.Rollback();
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -194,7 +207,7 @@ namespace CollageManager {
             SqlTransaction transaction = Connection.BeginTransaction();
             try
             {
-
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection, transaction);
 
                 // Executing the SQL query  
@@ -217,6 +230,10 @@ namespace CollageManager {
                 transaction.Rollback();
                 throw;
             }
+            finally
+            {
+                Connection.Close();
+            }
         }
         /// <summary>
         /// نمایش اطلاعات یک دانشجو با استفاده از آیدی درس
@@ -233,6 +250,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 adapter.SelectCommand = new SqlCommand(queryString, Connection);
 
                 adapter.Fill(ds);
@@ -256,6 +274,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
 
             return students;

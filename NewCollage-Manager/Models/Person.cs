@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
     /// <summary>
     /// کلاسی برای نمایش اطلاعات مشترک یک شخص که یک سری از کلاس ها از آن ارث بری کرده اند
     /// </summary>

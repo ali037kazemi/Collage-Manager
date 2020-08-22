@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CollageManager {
+    /// <Author>Ali Kazemi</Author>
     /// <summary>
     /// مسول آموزش که از کلاس Person ارث بری کرده است
     /// </summary>

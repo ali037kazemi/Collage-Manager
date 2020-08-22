@@ -43,6 +43,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -54,6 +55,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
         /// <summary>
@@ -77,6 +82,7 @@ namespace CollageManager {
 
             try
             {
+                Connection.Open();
                 SqlCommand cm = new SqlCommand(queryString, Connection);
 
                 // Executing the SQL query  
@@ -88,6 +94,10 @@ namespace CollageManager {
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
     }
